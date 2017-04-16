@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">WelcomeVisitor</string>
+    <string name="visitor_company_hint">Enter the name of your company.</string>
+    <string name="visitor_last_name_label">Last Name</string>
+    <string name="visitor_last_name_hint">Enter your last name.</string>
+    <string name="visitor_first_name_label">First Name</string>
+    <string name="visitor_first_name_hint">Enter your first name.</string>
+    <string name="visitor_arrival_date_label">Time of arrival</string>
+    <string name="visitor_arrival_date_now">NOW</string>
+    <string name="visitor_arrival_date_pick">CHOOSE</string>
+    <string name="visitor_departure_date_label">Time of departure</string>
+    <string name="list_item_visitor_exit_button_label">Exit</string>
+    <string name="visitor_internal_ref_label">Novem reference person</string>
+    <string name="visitor_supervisor_hint">Enter the name of your internalRef.</string>
+    <string name="aim_of_the_visit">Aim of the visit</string>
+    <string name="visitor_aim_hint">Enter a short description about the aim of your visit.</string>
+    <string name="date_picker_title">Choose a time:</string>
+    <string name="new_visitor">New visitor</string>
+    <string name="save_subtitle">Save</string>
+    <string name="exit_visitor_title">Exit</string>
+    <string name="exit_text_view">Are you leaving now?</string>
+    <string name="visitor_selected_format">%1$d visitors selected</string>
+    <string name="register_page_2">Page 2</string>
+    <string name="title_activity_screen_slide_pager">ScreenSlidePagerActivity</string>
+    <string name="visitor_company_label">Your company:</string>
+    <string name="next_button">Next</string>
+    <string name="add_visitor_button">+ Add visitor</string>
+    <string name="remove_visitor_button">- Remove Visitor</string>
+    <string name="ok_enter">Check-in</string>
+</resources>
