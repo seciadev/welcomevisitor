@@ -27,4 +27,7 @@
     <string name="add_visitor_button">+ Add visitor</string>
     <string name="remove_visitor_button">- Remove Visitor</string>
     <string name="ok_enter">Check-in</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_company_list">CompanyListActivity</string>
+    <string name="visitor_number_label"># visitors</string>
 </resources>

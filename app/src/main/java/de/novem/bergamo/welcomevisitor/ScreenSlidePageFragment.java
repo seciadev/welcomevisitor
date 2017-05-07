@@ -107,33 +107,13 @@ public class ScreenSlidePageFragment extends Fragment {
 
                 mVisitorRecyclerView = (RecyclerView) rootView.findViewById(R.id.visitor_same_company_recycler_view);
                 mVisitorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+                mGuestNum=1;
                 mVisitors = new ArrayList<>();
-                final Visitor visitor = new Visitor();
-                mVisitors.add(visitor);
+                final Visitor newVis = new Visitor();
+                mVisitors.add(newVis);
                 updateUI();
-                /*if(mAdapter==null){
-                    mAdapter = new VisitorAdapter(mVisitors);
-                    mVisitorRecyclerView.setAdapter(mAdapter);
-                } else{
-                    mAdapter.notifyDataSetChanged();
-                }*/
-
-                /*final ArrayList<TextView> mVisitorTextViews = new ArrayList<>();
-                final LinearLayout mGuestLayout = (LinearLayout) rootView.findViewById(R.id.guest_layout);
-                mGuestLayout.removeAllViews();*/
-
-                /*for (int i=1; i<=mGuestNum; i++) {
-                    TextView mVisitorTextView = new TextView(getContext());
-
-                    mVisitorTextView.setText("Visitor #" + i);
-
-                    mVisitorTextViews.add(mVisitorTextView);
-
-                    mGuestLayout.addView(mVisitorTextView);
 
 
-                }*/
 
                 Button mAddVisitorButton = (Button) rootView.findViewById(R.id.add_visitor_button);
                 mAddVisitorButton.setOnClickListener(new View.OnClickListener(){
@@ -141,26 +121,12 @@ public class ScreenSlidePageFragment extends Fragment {
                     @Override
                     public void onClick(View v){
                         mGuestNum++;
-                        //TextView mVisitorTextView = new TextView(getContext());
-                        //mVisitorTextView.setText("Visitor #" + mGuestNum);
-                        //mVisitorTextViews.add(mVisitorTextView);
-                        //mGuestLayout.addView(mVisitorTextView);
                         Visitor newV = new Visitor();
                         mVisitors.add(newV);
                         mAdapter=null;
                         updateUI();
 
-                        /*LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        //llp.setMargins(0, padding_5dp, 0, padding_5dp); // llp.setMargins(left, top, right, bottom);
 
-                        EditText mGuestLastNameEditText = new EditText(getContext());
-                        mGuestLayout.addView(mGuestLastNameEditText);
-                        mGuestLastNameEditText.setHint("Enter your last name");
-
-                        EditText mGuestFirstNameEditText = new EditText(getContext());
-                        mGuestFirstNameEditText.setLayoutParams(llp);
-                        mGuestLayout.addView(mGuestFirstNameEditText);
-                        mGuestFirstNameEditText.setHint("Enter your first name");*/
                     }
                 });
 
@@ -170,14 +136,11 @@ public class ScreenSlidePageFragment extends Fragment {
                     public void onClick(View v) {
                         if(mGuestNum>1) {
                             mGuestNum--;
-                            //mGuestLayout.removeView(mVisitorTextViews.get(mGuestNum));
                             mVisitors.remove(mGuestNum);
-                            //mVisitorTextViews.remove(mGuestNum);
                             mAdapter=null;
                             updateUI();
                         }
 
-                        //updateUI(mGuestNum);
                     }
                 });
 
@@ -186,16 +149,9 @@ public class ScreenSlidePageFragment extends Fragment {
                 mOkEnterButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                       /* for (int i=0; i<mGuestNum; i++){
-                            Visitor visitor = new Visitor();
-                            visitor.setCompany(mCompany);
-                            visitor.setLast_name("Visitor #" + i);
-                            mVisitorLab.addVisitor(visitor);
-                            NavUtils.navigateUpFromSameTask(getActivity());
-                        }
-                        //
-                    }*/
+
                         for (Visitor vis : mVisitors) {
+                            vis.setCompany(mCompany);
                             mVisitorLab.addVisitor(vis);
                         }
                         NavUtils.navigateUpFromSameTask(getActivity());
@@ -271,7 +227,7 @@ public class ScreenSlidePageFragment extends Fragment {
         public void onBindViewHolder(VisitorHolder holder, final int position){
             final Visitor visitor = mVisitors.get(position);
             holder.bindVisitor(visitor, position);
-            mVisitors.get(position).setCompany(mCompany);
+            //mVisitors.get(position).setCompany(mCompany);
             holder.mFirstNameEditText.setText(visitor.getFirst_name());
             holder.mFirstNameEditText.addTextChangedListener(new TextWatcher() {
                 @Override

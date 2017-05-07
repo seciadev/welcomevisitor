@@ -9,11 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".VisitorListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".VisitorActivity"
@@ -25,6 +21,22 @@
             android:label="@string/title_activity_screen_slide_pager"
             android:parentActivityName=".VisitorListActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/title_activity_splash"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CompanyListActivity"
+            android:label="@string/title_activity_company_list"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

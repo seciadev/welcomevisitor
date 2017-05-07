@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by gfand on 26/12/2016.
@@ -31,17 +32,29 @@ import java.util.List;
 public class VisitorListFragment extends Fragment{
 
     private static final String DIALOG_EXIT = "DialogExit";
+    private static final String ARG_COMPANY = "company";
 
     private RecyclerView mVisitorRecyclerView;
     private VisitorAdapter mAdapter;
     private TextView mVisitorSelectedTextView;
     private ImageButton mExitVisitors;
+    private String mCompany;
 
  //   public int mSelectedVisitors;
+
+    public static VisitorListFragment newInstance(String company){
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_COMPANY, company);
+
+        VisitorListFragment fragment = new VisitorListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        mCompany = (String) getArguments().getSerializable(ARG_COMPANY);
         setHasOptionsMenu(true);
     }
 
@@ -107,7 +120,7 @@ public class VisitorListFragment extends Fragment{
 
     private void updateUI(){
         VisitorLab visitorLab = VisitorLab.get(getActivity());
-        List<Visitor> visitors = visitorLab.getUncompletedVisitors();
+        List<Visitor> visitors = visitorLab.getUncompletedVisitorsFromSameCompany(mCompany);
 
         if(mAdapter == null) {
 
