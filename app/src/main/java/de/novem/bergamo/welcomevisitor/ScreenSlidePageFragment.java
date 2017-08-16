@@ -1,5 +1,6 @@
 package de.novem.bergamo.welcomevisitor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,19 +11,22 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.EmptyStackException;
 import java.util.List;
 
 public class ScreenSlidePageFragment extends Fragment {
@@ -31,7 +35,9 @@ public class ScreenSlidePageFragment extends Fragment {
     private int mPosition;
     private static final String ARG_GUEST_NUM = "guest_num";
     private int mGuestNum;
+    private static String mPurpose;
     private static String mCompany;
+    private static String mEmployee;
     private VisitorLab mVisitorLab;
     private RecyclerView mVisitorRecyclerView;
     private VisitorAdapter mAdapter;
@@ -57,6 +63,8 @@ public class ScreenSlidePageFragment extends Fragment {
         
        // mCompanyVisitors = new ArrayList<>();
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +102,13 @@ public class ScreenSlidePageFragment extends Fragment {
                 mNextButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v){
-                        sendMessage(mPosition+1);
+                        if (mCompany==null||mCompany.equals("")) {
+                            Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                            mVisitorCompany.startAnimation(shake);
+                        } else {
+                            sendMessage(mPosition + 1);
+
+                        }
                     }
 
                 });
@@ -104,6 +118,68 @@ public class ScreenSlidePageFragment extends Fragment {
             case 1:
                 rootView = (ViewGroup) inflater.inflate(
                         R.layout.fragment_visitor_slide_page_2, container, false);
+                Spinner spinner = (Spinner) rootView.findViewById(R.id.purpose_spinner);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                        R.array.purpose_choice, android.R.layout.simple_spinner_item);
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                // Apply the adapter to the spinner
+                spinner.setAdapter(adapter);
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> parent, View view,
+                                               int position, long id) {
+                        mPurpose = (String)parent.getItemAtPosition(position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                final EditText mEmployeeVisit = (EditText)rootView.findViewById(R.id.employee_edit_text);
+                mEmployeeVisit.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        //
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        mEmployee=s.toString();
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        //
+                    }
+                });
+
+                Button mNextButton1 = (Button)rootView.findViewById(R.id.next_button);
+                mNextButton1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                            sendMessage(mPosition + 1);
+                    }
+
+                });
+
+                Button mBackButton1 = (Button)rootView.findViewById(R.id.back_button);
+                mBackButton1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        sendMessage(mPosition-1);
+                    }
+
+                });
+
+                break;
+
+
+            case 2:
+                rootView = (ViewGroup) inflater.inflate(
+                        R.layout.fragment_visitor_slide_page_3, container, false);
 
                 mVisitorRecyclerView = (RecyclerView) rootView.findViewById(R.id.visitor_same_company_recycler_view);
                 mVisitorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -115,7 +191,7 @@ public class ScreenSlidePageFragment extends Fragment {
 
 
 
-                Button mAddVisitorButton = (Button) rootView.findViewById(R.id.add_visitor_button);
+                ImageButton mAddVisitorButton = (ImageButton) rootView.findViewById(R.id.add_visitor_button);
                 mAddVisitorButton.setOnClickListener(new View.OnClickListener(){
 
                     @Override
@@ -130,7 +206,7 @@ public class ScreenSlidePageFragment extends Fragment {
                     }
                 });
 
-                Button mRemoveVisitorButton = (Button) rootView.findViewById(R.id.remove_visitor_button);
+                ImageButton mRemoveVisitorButton = (ImageButton) rootView.findViewById(R.id.remove_visitor_button);
                 mRemoveVisitorButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -144,17 +220,44 @@ public class ScreenSlidePageFragment extends Fragment {
                     }
                 });
 
+                Button mBackButton2 = (Button)rootView.findViewById(R.id.back_button);
+                mBackButton2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        sendMessage(mPosition-1);
+                    }
+
+                });
+
                 mVisitorLab = VisitorLab.get(getContext());
-                Button mOkEnterButton = (Button) rootView.findViewById(R.id.ok_enter);
+                final Button mOkEnterButton = (Button) rootView.findViewById(R.id.ok_enter);
                 mOkEnterButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
+                        try {
 
-                        for (Visitor vis : mVisitors) {
-                            vis.setCompany(mCompany);
-                            mVisitorLab.addVisitor(vis);
+                            for (Visitor vis : mVisitors) {
+                                if (vis.getLast_name() == null || mCompany.equals("")) {
+                                    throw new EmptyStackException();
+                                }
+                                vis.setCompany(mCompany);
+                                vis.setPurpose(mPurpose);
+                                vis.setEmployeeVisit(mEmployee);
+                                mVisitorLab.addVisitor(vis);
+                            }
+                            Context context = getContext();
+                            CharSequence text = "You are now checked-in";
+                            int duration = Toast.LENGTH_LONG;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+                            NavUtils.navigateUpFromSameTask(getActivity());
+                        } catch (EmptyStackException e){
+                            Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                            mVisitorRecyclerView.startAnimation(shake);
                         }
-                        NavUtils.navigateUpFromSameTask(getActivity());
+
                     }
                 });
 

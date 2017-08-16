@@ -23,11 +23,27 @@
     <string name="register_page_2">Page 2</string>
     <string name="title_activity_screen_slide_pager">ScreenSlidePagerActivity</string>
     <string name="visitor_company_label">Your company:</string>
-    <string name="next_button">Next</string>
-    <string name="add_visitor_button">+ Add visitor</string>
+    <string name="next_button">Next &gt;</string>
+    <string name="add_visitor_button">Add visitor</string>
     <string name="remove_visitor_button">- Remove Visitor</string>
     <string name="ok_enter">Check-in</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_company_list">CompanyListActivity</string>
     <string name="visitor_number_label"># visitors</string>
+    <string name="company_error_hint">Check the field</string>
+    <string name="add_remove_visitor_button">Add/Remove visitor</string>
+    <string name="check_in">Check-in</string>
+    <string name="step_1">Step 1</string>
+    <string name="step_2">Step 2</string>
+    <string name="step_3">Step 3</string>
+    <string name="purpose_visit">Purpose of the visit</string>
+    <string name="employee_meet">Employee to meet</string>
+    <string name="employee_meet_hint">Insert the name of the person you have to meet</string>
+    <string name="back_button">&lt; Back</string>
+    <string-array name="purpose_choice">
+        <item>Meeting</item>
+        <item>Interview</item>
+        <item>Maintenance</item>
+        <item>Other</item>
+    </string-array>
 </resources>

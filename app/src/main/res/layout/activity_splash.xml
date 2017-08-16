@@ -5,39 +5,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="50dp"
     >
 
 
     <ImageView
         android:id="@+id/logo"
-        app:layout_widthPercent="50%"
+        app:layout_widthPercent="40%"
         android:layout_height="wrap_content"
         android:src="@drawable/asset_2"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView
+        android:id="@+id/welcome_textview"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="70sp"
+        android:textColor="#659EC9"
+        android:text="Welcome"
         android:layout_below="@id/logo"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
+        android:layout_centerHorizontal="true"
+        android:layout_margin="60dp"/>
+    <!--android:textStyle="bold"-->
 
-        <Button
+    <LinearLayout
+        android:id="@+id/check_in_out_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/welcome_textview"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+
+        >
+
+        <ImageButton
             android:id="@+id/checkInButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_weight="1"
-            android:drawableRight="@drawable/asset_4"
+            android:src="@drawable/check_in"
+            android:layout_marginLeft="20dp"
+            android:scaleType="fitEnd"
+            android:background="@android:color/transparent"
+
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/checkOutButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/asset_3"/>
+            android:layout_marginRight="20dp"
+            android:scaleType="fitStart"
+            android:background="@android:color/transparent"
+            android:src="@drawable/check_out"
+            />
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/clock_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/check_in_out_layout">
+
+        <TextClock
+        android:id="@+id/timestamp_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="60dp"
+        android:textSize="100sp"
+
+        android:layout_gravity="center"
+        />
+
+        <TextClock
+            android:id="@+id/date_stamp_text_clock"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="60dp"
+            android:textSize="50sp"
+
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/clock_layout">
+
+        <TextView
+            android:id="@+id/visitors_counter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
 
     </LinearLayout>
 

@@ -19,7 +19,24 @@ public class Visitor {
     private Date mArrivalDate;
     private Date mDepartureDate;
     private boolean mCompleted;
+    private String mPurpose;
+    private String mEmployeeVisit;
 
+    public String getEmployeeVisit() {
+        return mEmployeeVisit;
+    }
+
+    public void setEmployeeVisit(String employeeVisit) {
+        mEmployeeVisit = employeeVisit;
+    }
+
+    public String getPurpose() {
+        return mPurpose;
+    }
+
+    public void setPurpose(String purpose) {
+        mPurpose = purpose;
+    }
 
     public UUID getId() {
         return mId;

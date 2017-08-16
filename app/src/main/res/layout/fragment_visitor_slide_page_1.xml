@@ -6,31 +6,75 @@
             android:layout_height="match_parent"
             android:fillViewport="true">
 
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
     <LinearLayout
         android:layout_marginTop="40dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40dp"
+        app:layout_widthPercent="60%">
 
-        <TextView style="?android:listSeparatorTextViewStyle"
-                  android:padding="16dp"
-                  android:lineSpacingMultiplier="1.2"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:text="@string/visitor_company_label" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50sp"
+            android:text="@string/check_in"
+            android:layout_marginBottom="40dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/step_1"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:src="@drawable/ic_company"
+                android:layout_margin="5dp"
+                />
+
+            <TextView style="?android:listSeparatorTextViewStyle"
+                      android:padding="16dp"
+                      android:layout_margin="5dp"
+                      android:lineSpacingMultiplier="1.2"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="@string/visitor_company_label" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/visitor_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="66dp"
+            android:layout_marginTop="5dp"
             android:hint="@string/visitor_company_hint"/>
 
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <Button
             android:id="@+id/next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/next_button"/>
-
+            <!--android:layout_centerInParent="true"/>-->
+        </RelativeLayout>
 
 
         <FrameLayout
@@ -46,4 +90,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    </android.support.percent.PercentRelativeLayout>
 </ScrollView>

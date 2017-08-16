@@ -19,7 +19,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 2;
+    private static final int NUM_PAGES = 3;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -54,6 +54,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
     }
 
 
+
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -82,7 +84,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
-   /* @Override
+
+    @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
@@ -92,7 +95,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
             // Otherwise, select the previous step.
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
-    }*/
+    }
 
     /**
      * A simple pager adapter that represents 3 ScreenSlidePageFragment objects, in
