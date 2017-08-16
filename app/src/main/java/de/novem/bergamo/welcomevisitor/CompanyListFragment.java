@@ -3,12 +3,14 @@ package de.novem.bergamo.welcomevisitor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class CompanyListFragment extends Fragment {
 
     private RecyclerView mCompanyRecyclerView;
     private CompanyAdapter mAdapter;
+    private Button mBackButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -42,6 +45,14 @@ public class CompanyListFragment extends Fragment {
 
         mCompanyRecyclerView = (RecyclerView) view.findViewById(R.id.company_recycler_view);
         mCompanyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mBackButton = (Button) view.findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                NavUtils.navigateUpFromSameTask(getActivity());
+        }
+        });
 
         updateUI();
 
@@ -72,12 +83,9 @@ public class CompanyListFragment extends Fragment {
 
         }
 
-        //QUALCHE ERRORE QUI
         public void bindCompany(String company, int numVis){
             mCompanyTextView.setText(company);
             mCompany = company;
-            /*VisitorLab visitorLab = VisitorLab.get(getActivity());
-            List<Visitor> openVis = visitorLab.getUncompletedVisitorsFromSameCompany(company);*/
             String visNumber = String.valueOf(numVis);
             mVisitorNumberTextView.setText(visNumber);
         }
@@ -93,9 +101,6 @@ public class CompanyListFragment extends Fragment {
         private Map<String, Integer> mCompaniesVisitors;
         private String[] mCompanies;
         private Integer[] mNumVisitors;
-        //public SparseBooleanArray mCheckedVisitors = new SparseBooleanArray();
-
-
 
         public CompanyAdapter(Map<String,Integer> compVis){
 

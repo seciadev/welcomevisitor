@@ -1,9 +1,11 @@
 package de.novem.bergamo.welcomevisitor;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -20,16 +22,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by gfand on 26/12/2016.
  */
 
-public class VisitorListFragment extends Fragment{
+public class VisitorListFragment extends Fragment {
 
     private static final String DIALOG_EXIT = "DialogExit";
     private static final String ARG_COMPANY = "company";
@@ -38,11 +38,12 @@ public class VisitorListFragment extends Fragment{
     private VisitorAdapter mAdapter;
     private TextView mVisitorSelectedTextView;
     private ImageButton mExitVisitors;
+    private Button mCheckOutButton;
     private String mCompany;
 
- //   public int mSelectedVisitors;
+    //   public int mSelectedVisitors;
 
-    public static VisitorListFragment newInstance(String company){
+    public static VisitorListFragment newInstance(String company) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_COMPANY, company);
 
@@ -52,22 +53,47 @@ public class VisitorListFragment extends Fragment{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCompany = (String) getArguments().getSerializable(ARG_COMPANY);
         setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_visitor_list,container,false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_visitor_list, container, false);
 
         mVisitorRecyclerView = (RecyclerView) view.findViewById(R.id.visitor_recycler_view);
         mVisitorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mVisitorSelectedTextView = (TextView)  view.findViewById(R.id.list_item_count_selected);
+        mVisitorSelectedTextView = (TextView) view.findViewById(R.id.list_item_count_selected);
 
-        mExitVisitors = (ImageButton) view.findViewById(R.id.exit_button);
+        mCheckOutButton = (Button) view.findViewById(R.id.check_out_button);
+        mCheckOutButton.setEnabled(false);
+        mCheckOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SparseBooleanArray checkedVisitors = mAdapter.mCheckedVisitors;
+                for (int i = 0; i < checkedVisitors.size(); i++) {
+                    int key = checkedVisitors.keyAt(i);
+                    mAdapter.setCompletedVisitor(key);
+                }
+                mAdapter.mCheckedVisitors.clear();
+                mAdapter = null;
+                //updateUI();
+
+                Context context = getContext();
+                CharSequence text = "You have been successfully checked-out";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                NavUtils.navigateUpFromSameTask(getActivity());
+            }
+        });
+
+        /*mExitVisitors = (ImageButton) view.findViewById(R.id.exit_button);
         mExitVisitors.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -81,7 +107,7 @@ public class VisitorListFragment extends Fragment{
                 updateUI();
 
             }
-        });
+        });*/
 
 
         updateUI();
@@ -90,20 +116,20 @@ public class VisitorListFragment extends Fragment{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        mAdapter=null;
+        mAdapter = null;
         updateUI();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_visitor_list, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_visitor:
                 /*Visitor visitor = new Visitor();
@@ -118,27 +144,29 @@ public class VisitorListFragment extends Fragment{
         }
     }
 
-    private void updateUI(){
+    private void updateUI() {
         VisitorLab visitorLab = VisitorLab.get(getActivity());
         List<Visitor> visitors = visitorLab.getUncompletedVisitorsFromSameCompany(mCompany);
 
-        if(mAdapter == null) {
+        if (mAdapter == null) {
 
             mAdapter = new VisitorAdapter(visitors);
             mVisitorRecyclerView.setAdapter(mAdapter);
-        } else{
+        } else {
             mAdapter.notifyDataSetChanged();
         }
 
         SparseBooleanArray mSelectedVisitors = mAdapter.mCheckedVisitors;
-        if(mSelectedVisitors.size()>0){
+        if (mSelectedVisitors.size() > 0) {
             mVisitorSelectedTextView.setVisibility(View.VISIBLE);
-            mExitVisitors.setVisibility(View.VISIBLE);
-            String visitorsNotification = getString(R.string.visitor_selected_format, mSelectedVisitors.size());
+            //mExitVisitors.setVisibility(View.VISIBLE);
+            mCheckOutButton.setEnabled(true);
+            Resources res = getResources();
+            String visitorsNotification = res.getQuantityString(R.plurals.numberOfVisitorsCounted, mSelectedVisitors.size(), mSelectedVisitors.size());
             mVisitorSelectedTextView.setText(visitorsNotification);
         } else {
             mVisitorSelectedTextView.setVisibility(View.GONE);
-            mExitVisitors.setVisibility(View.GONE);
+            //mExitVisitors.setVisibility(View.GONE);
         }
     }
 
@@ -150,7 +178,7 @@ public class VisitorListFragment extends Fragment{
         private TextView mLastNameTextView;
         private CheckBox mIsSelectedCheckBox;
 
-        public  VisitorHolder(View itemView){
+        public VisitorHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             mCompanyTextView = (TextView) itemView.findViewById(R.id.item_company);
@@ -159,66 +187,65 @@ public class VisitorListFragment extends Fragment{
 
         }
 
-        public void bindVisitor(Visitor visitor){
+        public void bindVisitor(Visitor visitor) {
             mVisitor = visitor;
             mCompanyTextView.setText(mVisitor.getCompany());
             mLastNameTextView.setText(mVisitor.getLast_name());
         }
 
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             Intent intent = VisitorActivity.newIntent(getActivity(), mVisitor.getId());
             startActivity(intent);
         }
     }
 
-    private class VisitorAdapter extends RecyclerView.Adapter<VisitorHolder>{
+    private class VisitorAdapter extends RecyclerView.Adapter<VisitorHolder> {
         private List<Visitor> mVisitors;
         public SparseBooleanArray mCheckedVisitors = new SparseBooleanArray();
 
 
-
-        public VisitorAdapter(List<Visitor> visitors){
+        public VisitorAdapter(List<Visitor> visitors) {
             mVisitors = visitors;
         }
 
         @Override
-        public VisitorHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        public VisitorHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.list_item_visitor, parent, false);
             return new VisitorHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(VisitorHolder holder, final int position){
+        public void onBindViewHolder(VisitorHolder holder, final int position) {
             final Visitor visitor = mVisitors.get(position);
-                holder.bindVisitor(visitor);
-                holder.mIsSelectedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked) {
-                            //  mSelectedVisitors++;
-                            mCheckedVisitors.append(position, true);
-                        } else {
-                            //  mSelectedVisitors--;
-                            mCheckedVisitors.delete(position);
-                        }
-                        updateUI();
+            holder.bindVisitor(visitor);
+            holder.mIsSelectedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        //  mSelectedVisitors++;
+                        mCheckedVisitors.append(position, true);
+                    } else {
+                        //  mSelectedVisitors--;
+                        mCheckedVisitors.delete(position);
                     }
-                });
+                    updateUI();
+                }
+            });
         }
 
         @Override
-        public int getItemCount(){
+        public int getItemCount() {
             return mVisitors.size();
         }
 
-        public void setCompletedVisitor(int key){
+        public void setCompletedVisitor(int key) {
             mVisitors.get(key).setCompleted(true);
             Date date = new Date();
             mVisitors.get(key).setDepartureDate(date);
-           // mVisitors.remove(key);
-           // notifyItemRemoved(key);
+            // mVisitors.remove(key);
+            // notifyItemRemoved(key);
         }
     }
 

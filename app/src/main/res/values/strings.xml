@@ -40,10 +40,19 @@
     <string name="employee_meet">Employee to meet</string>
     <string name="employee_meet_hint">Insert the name of the person you have to meet</string>
     <string name="back_button">&lt; Back</string>
+    <string name="check_out">Check-out</string>
+    <string name="choose_company">Choose your company</string>
+    <string name="choose_visitor">Select one or more visitors</string>
     <string-array name="purpose_choice">
         <item>Meeting</item>
         <item>Interview</item>
         <item>Maintenance</item>
         <item>Other</item>
     </string-array>
+    <plurals name="numberOfVisitorsCounted">
+        <item quantity="one">%d visitor selected</item>
+        <item quantity="few">%d visitors selected</item>
+        <item quantity="other">%d visitors selected</item>
+    </plurals>
+
 </resources>
