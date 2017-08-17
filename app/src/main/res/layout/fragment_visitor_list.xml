@@ -71,7 +71,7 @@
             >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/last_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -79,18 +79,19 @@
                 android:layout_centerVertical="true"
                 android:paddingBottom="24dp"
                 android:paddingTop="24dp"
-                android:text="@string/visitor_company_label"
+                android:paddingLeft="66dp"
+                android:text="@string/visitor_name_label"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/check_in_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="16dp"
-                android:text="@string/visitor_last_name_label"
+                android:text="@string/check_in_time"
                 android:textStyle="bold"/>
 
             <View

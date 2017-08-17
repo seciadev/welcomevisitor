@@ -2,6 +2,7 @@ package de.novem.bergamo.welcomevisitor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -246,7 +247,8 @@ public class ScreenSlidePageFragment extends Fragment {
                                 mVisitorLab.addVisitor(vis);
                             }
                             Context context = getContext();
-                            CharSequence text = "You are now checked-in";
+                            Resources res = getResources();
+                            CharSequence text = res.getText(R.string.check_in_toast);
                             int duration = Toast.LENGTH_LONG;
 
                             Toast toast = Toast.makeText(context, text, duration);

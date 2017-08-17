@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="66dp"
             android:layout_marginTop="5dp"
+            android:inputType="textCapSentences"
             android:hint="@string/visitor_company_hint"/>
 
         <RelativeLayout

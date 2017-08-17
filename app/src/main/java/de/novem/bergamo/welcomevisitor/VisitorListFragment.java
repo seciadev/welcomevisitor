@@ -22,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class VisitorListFragment extends Fragment {
     private TextView mVisitorSelectedTextView;
     private ImageButton mExitVisitors;
     private Button mCheckOutButton;
+    private Button mBackButton;
     private String mCompany;
 
     //   public int mSelectedVisitors;
@@ -56,7 +59,6 @@ public class VisitorListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCompany = (String) getArguments().getSerializable(ARG_COMPANY);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -83,12 +85,21 @@ public class VisitorListFragment extends Fragment {
                 //updateUI();
 
                 Context context = getContext();
-                CharSequence text = "You have been successfully checked-out";
+                Resources res = getResources();
+                CharSequence text = res.getText(R.string.check_out_toast);
                 int duration = Toast.LENGTH_LONG;
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
+                NavUtils.navigateUpFromSameTask(getActivity());
+            }
+        });
+
+        mBackButton = (Button) view.findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 NavUtils.navigateUpFromSameTask(getActivity());
             }
         });
@@ -174,23 +185,27 @@ public class VisitorListFragment extends Fragment {
 
         private Visitor mVisitor;
 
-        private TextView mCompanyTextView;
         private TextView mLastNameTextView;
+        private TextView mTimeEnterTextView;
         private CheckBox mIsSelectedCheckBox;
 
         public VisitorHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            mCompanyTextView = (TextView) itemView.findViewById(R.id.item_company);
-            mLastNameTextView = (TextView) itemView.findViewById(R.id.item_field_2);
+            mLastNameTextView = (TextView) itemView.findViewById(R.id.last_name_textview);
+            mTimeEnterTextView = (TextView) itemView.findViewById(R.id.time_enter_textview);
             mIsSelectedCheckBox = (CheckBox) itemView.findViewById(R.id.visitor_item_select);
 
         }
 
         public void bindVisitor(Visitor visitor) {
             mVisitor = visitor;
-            mCompanyTextView.setText(mVisitor.getCompany());
-            mLastNameTextView.setText(mVisitor.getLast_name());
+            DateFormat formatDate = new SimpleDateFormat("HH:mm");
+            Date date = mVisitor.getArrivalDate();
+            String formattedDate = formatDate.format(date);
+            mTimeEnterTextView.setText(formattedDate);
+            String name = mVisitor.getLast_name() + " " + mVisitor.getFirst_name();
+            mLastNameTextView.setText(name);
         }
 
         @Override

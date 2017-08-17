@@ -1,6 +1,7 @@
 package de.novem.bergamo.welcomevisitor;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -61,13 +62,11 @@ public class SplashActivity extends AppCompatActivity {
         counterVisitorsTextView = (TextView)findViewById(R.id.visitors_counter_text_view);
         VisitorLab visitorLab = VisitorLab.get(getApplicationContext());
         int counterVisitor = visitorLab.getUncompletedVisitors().size();
-        switch (counterVisitor){
-            case 1:
-                counterVisitorsTextView.setText("There is 1 guest in the company.");
-                break;
-            default:
-                counterVisitorsTextView.setText("There are " + counterVisitor + " guests in the company");
-        }
+
+        Resources res = getResources();
+        String counterVis = res.getQuantityString(R.plurals.numberOfVisitorsPresent, counterVisitor, counterVisitor);
+        counterVisitorsTextView.setText(counterVis);
+
     }
 
 
