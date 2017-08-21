@@ -28,10 +28,10 @@ public class VisitorBaseHelper extends SQLiteOpenHelper {
             VisitorTable.Cols.COMPANY + ", " +
             VisitorTable.Cols.LAST_NAME + ", " +
             VisitorTable.Cols.FIRST_NAME + ", " +
-            VisitorTable.Cols.REF_PERSON + ", " +
-            VisitorTable.Cols.AIM + ", " +
-            VisitorTable.Cols.ARRIVAL_DATE + ", " +
-            VisitorTable.Cols.DEPARTURE_DATE + ", " +
+            VisitorTable.Cols.EMPLOYEE_MEET + ", " +
+            VisitorTable.Cols.PURPOSE_VISIT + ", " +
+            VisitorTable.Cols.CHECKIN_DATE + ", " +
+            VisitorTable.Cols.CHECKOUT_DATE + ", " +
             VisitorTable.Cols.COMPLETED +
             ")");
     }

@@ -13,10 +13,10 @@ public class VisitorDbSchema {
             public static final String COMPANY = "company";
             public static final String LAST_NAME = "last_name";
             public static final String FIRST_NAME = "first_name";
-            public static final String REF_PERSON = "ref_person";
-            public static final String AIM = "aim";
-            public static final String ARRIVAL_DATE = "arrival_date";
-            public static final String DEPARTURE_DATE = "departure_date";
+            public static final String EMPLOYEE_MEET = "employee_meet";
+            public static final String PURPOSE_VISIT = "purpose_visit";
+            public static final String CHECKIN_DATE = "checkin_date";
+            public static final String CHECKOUT_DATE = "checkout_date";
             public static final String COMPLETED = "completed";
 
         }

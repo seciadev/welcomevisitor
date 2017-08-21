@@ -107,10 +107,13 @@ public class Visitor {
     }
 
     public Visitor(){
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Visitor(UUID id){
+        mId = id;
         mArrivalDate = new Date();
         mDepartureDate = new Date();
-        mCompleted = false;
-
+        //mCompleted = false;
     }
 }

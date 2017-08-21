@@ -246,6 +246,7 @@ public class ScreenSlidePageFragment extends Fragment {
                                 vis.setEmployeeVisit(mEmployee);
                                 mVisitorLab.addVisitor(vis);
                             }
+                            List<Visitor> newVisitors = mVisitorLab.getVisitors();
                             Context context = getContext();
                             Resources res = getResources();
                             CharSequence text = res.getText(R.string.check_in_toast);

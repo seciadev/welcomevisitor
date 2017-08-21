@@ -128,11 +128,15 @@ public class CompanyListFragment extends Fragment {
             return mCompaniesVisitors.size();
         }
 
-    }
+        private void setCompanies(Map<String, Integer> compVis){
+            mCompaniesVisitors = compVis;
+        }
 
+    }
 
     private void updateUI() {
         VisitorLab visitorLab = VisitorLab.get(getActivity());
+        //List<Visitor> visitors = visitorLab.getVisitors();
         List<String> companies = visitorLab.getUncompletedCompanies();
         Map<String, Integer> compVis = new HashMap<>();
 
@@ -146,6 +150,7 @@ public class CompanyListFragment extends Fragment {
             mAdapter = new CompanyAdapter(compVis);
             mCompanyRecyclerView.setAdapter(mAdapter);
         } else {
+            mAdapter.setCompanies(compVis);
             mAdapter.notifyDataSetChanged();
         }
     }

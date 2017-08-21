@@ -164,6 +164,7 @@ public class VisitorListFragment extends Fragment {
             mAdapter = new VisitorAdapter(visitors);
             mVisitorRecyclerView.setAdapter(mAdapter);
         } else {
+            mAdapter.setVisitors(visitors);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -204,7 +205,12 @@ public class VisitorListFragment extends Fragment {
             Date date = mVisitor.getArrivalDate();
             String formattedDate = formatDate.format(date);
             mTimeEnterTextView.setText(formattedDate);
-            String name = mVisitor.getLast_name() + " " + mVisitor.getFirst_name();
+            String name;
+            if(mVisitor.getFirst_name()!=null){
+                name = mVisitor.getLast_name() + " " + mVisitor.getFirst_name();
+            }  else {
+                name = mVisitor.getLast_name();
+            }
             mLastNameTextView.setText(name);
         }
 
@@ -255,10 +261,15 @@ public class VisitorListFragment extends Fragment {
             return mVisitors.size();
         }
 
+        public void setVisitors(List<Visitor> visitors){
+            mVisitors = visitors;
+        }
+
         public void setCompletedVisitor(int key) {
             mVisitors.get(key).setCompleted(true);
             Date date = new Date();
             mVisitors.get(key).setDepartureDate(date);
+            VisitorLab.get(getActivity()).updateVisitor(mVisitors.get(key));
             // mVisitors.remove(key);
             // notifyItemRemoved(key);
         }
