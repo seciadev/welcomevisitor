@@ -47,6 +47,15 @@
     <string name="check_out_toast">You have been successfully checked-out</string>
     <string name="check_in_time">Check-in time</string>
     <string name="visitor_name_label">Name</string>
+    <string name="admin_login">Admin area</string>
+    <string name="title_admin_table_activity">Guestbook</string>
+    <string name="guestbook_textview">Guestbook</string>
+    <string name="purpose_visit_label">Purpose</string>
+    <string name="employee_label">Ref Employee</string>
+    <string name="date_label">Date</string>
+    <string name="checked_out_label">Now inside</string>
+    <string name="company_label">Company</string>
+    <string name="password_title">Enter password:</string>
     <string-array name="purpose_choice">
         <item>Meeting</item>
         <item>Interview</item>

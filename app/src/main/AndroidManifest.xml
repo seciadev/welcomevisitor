@@ -40,6 +40,13 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".AdminTableActivity"
+            android:label="@string/title_admin_table_activity"
+            android:parentActivityName=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

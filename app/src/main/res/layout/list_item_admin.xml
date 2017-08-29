@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="24dp"
+                android:paddingTop="5dp"
+                >
+
+    <TextView
+        android:id="@+id/last_name_label"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/company_label"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/last_name_label"
+        android:layout_centerVertical="true"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/purpose_label"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/company_label"
+        android:layout_centerVertical="true"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+
+
+    <TextView
+        android:id="@+id/date_label"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/purpose_label"
+        android:layout_centerVertical="true"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:ellipsize="end"
+        android:maxLines="1"/>
+
+    <CheckBox
+        android:id="@+id/is_inside_checkbox"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:paddingRight="16dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignBottom="@id/last_name_label"
+        android:paddingBottom="5dp"/>
+</RelativeLayout>

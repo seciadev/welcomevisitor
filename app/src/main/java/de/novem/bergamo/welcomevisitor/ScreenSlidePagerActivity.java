@@ -13,7 +13,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class ScreenSlidePagerActivity extends FragmentActivity {
     /**
@@ -25,7 +28,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
-    private ViewPager mPager;
+    private CustomViewPager mPager;
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
@@ -40,7 +43,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         //mGuestNum = 1;
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (CustomViewPager) findViewById(R.id.pager);
+        mPager.setPagingEnabled(false);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
@@ -118,3 +122,4 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         }
     }
 }
+

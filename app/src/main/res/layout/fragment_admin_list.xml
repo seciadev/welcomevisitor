@@ -12,58 +12,36 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="40dp"
         android:orientation="vertical"
-        app:layout_widthPercent="60%">
+        app:layout_widthPercent="100%">
 
         <TextView
+            android:id="@+id/guestbook_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="50sp"
-            android:text="@string/check_out"
+            android:text="@string/guestbook_textview"
             android:layout_marginBottom="40dp"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/step_2"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:layout_marginBottom="10dp"/>
-
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_height="wrap_content">
 
-            <TextView
+            <ImageView
+                android:id="@+id/search_ic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:text="@string/choose_visitor"/>
-
-            <TextView
-                android:id="@+id/list_item_count_selected"
-                android:layout_width="wrap_content"
+                android:src="@drawable/ic_search"/>
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_weight="2"
+                android:hint="Search..."
+                android:layout_marginBottom="25dp"
+                android:layout_toRightOf="@id/search_ic"
                 />
-
-            <!--<ImageButton
-                android:id="@+id/exit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="#80FFFFFF"
-                android:padding="12dp"
-                android:src="@drawable/ic_exit_button"/>-->
-
         </RelativeLayout>
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -72,26 +50,67 @@
 
             <TextView
                 android:id="@+id/last_name_label"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:paddingBottom="24dp"
                 android:paddingTop="24dp"
-                android:paddingLeft="66dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
                 android:text="@string/visitor_name_label"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/check_in_time"
+                android:id="@+id/company_label"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/last_name_label"
+                android:layout_centerVertical="true"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/company_label"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/purpose_label"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/company_label"
+                android:layout_centerVertical="true"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/purpose_visit_label"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/date_label"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/purpose_label"
+                android:layout_centerVertical="true"
+                android:paddingBottom="24dp"
+                android:paddingTop="24dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/date_label"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/checked_out_label"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="16dp"
-                android:text="@string/check_in_time"
+                android:text="@string/checked_out_label"
                 android:textStyle="bold"/>
 
             <View
@@ -109,6 +128,7 @@
 
         </RelativeLayout>
 
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/visitor_recycler_view"
             android:layout_width="match_parent"
@@ -124,13 +144,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/back_button"/>
-
-            <Button
-                android:id="@+id/check_out_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/check_out"/>
 
         </LinearLayout>
 

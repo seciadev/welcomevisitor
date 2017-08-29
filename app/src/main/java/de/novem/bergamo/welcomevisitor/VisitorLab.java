@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.SyncStateContract;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.UUID;
 
@@ -48,7 +50,7 @@ public class VisitorLab {
     public List<Visitor> getVisitors() {
         List<Visitor> visitors = new ArrayList<>();
 
-        VisitorCursorWrapper cursor = queryVisitors(null,null);
+        VisitorCursorWrapper cursor = queryVisitors(null,null,null);
 
         try{
             cursor.moveToFirst();
@@ -66,7 +68,8 @@ public class VisitorLab {
     public Visitor getVisitor(UUID id) {
         VisitorCursorWrapper cursor = queryVisitors(
                 VisitorTable.Cols.UUID + " = ?",
-                new String[] { id.toString()}
+                new String[] { id.toString()},
+                null
         );
 
         try{
@@ -78,6 +81,114 @@ public class VisitorLab {
         } finally {
             cursor.close();
         }
+    }
+
+    public List<Visitor> getVisitorsSortName(boolean ascending) {
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        if(ascending) {
+            cursor = queryVisitors(null, null, VisitorTable.Cols.LAST_NAME + " COLLATE NOCASE");
+        }else{
+            cursor = queryVisitors(null, null, VisitorTable.Cols.LAST_NAME + " COLLATE NOCASE DESC");
+        }
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
+    }
+
+    public List<Visitor> getVisitorSortPurpose(boolean ascending){
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        if(ascending) {
+            cursor = queryVisitors(null, null, VisitorTable.Cols.PURPOSE_VISIT + " COLLATE NOCASE");
+        }else{
+            cursor = queryVisitors(null, null, VisitorTable.Cols.PURPOSE_VISIT + " COLLATE NOCASE DESC");
+        }
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
+    }
+
+    public List<Visitor> getVisitorSortCompany(boolean ascending){
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        if(ascending) {
+            cursor = queryVisitors(null, null, VisitorTable.Cols.COMPANY + " COLLATE NOCASE");
+        }else{
+            cursor = queryVisitors(null, null, VisitorTable.Cols.COMPANY + " COLLATE NOCASE DESC");
+        }
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
+    }
+
+
+    public List<Visitor> getVisitorSortDate(boolean ascending) {
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        if(ascending) {
+            cursor = queryVisitors(null, null, VisitorTable.Cols.CHECKIN_DATE);
+        }else{
+            cursor = queryVisitors(null, null, VisitorTable.Cols.CHECKIN_DATE + " DESC");
+        }
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
+    }
+
+    public List<Visitor> getVisitorQuery(String query) {
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        cursor = queryVisitors(VisitorTable.Cols.LAST_NAME + " LIKE ?" + " OR " + VisitorTable.Cols.COMPANY + " LIKE ?" + " OR " + VisitorTable.Cols.PURPOSE_VISIT + " LIKE ?", new String[] { "%"+query+"%","%"+query+"%","%"+query+"%" }, null);
+
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
     }
 
     public void updateVisitor(Visitor visitor){
@@ -102,7 +213,7 @@ public class VisitorLab {
 
     }
 
-    private VisitorCursorWrapper queryVisitors(String whereClause, String[] whereArgs){
+    private VisitorCursorWrapper queryVisitors(String whereClause, String[] whereArgs, String orderBy){
         Cursor cursor = mDatabase.query(
                 VisitorTable.NAME,
                 null, //columns
@@ -110,7 +221,7 @@ public class VisitorLab {
                 whereArgs,
                 null, //groupby
                 null, //having
-                null //orderby
+                orderBy //orderby
         );
 
         return new VisitorCursorWrapper(cursor);
@@ -126,6 +237,8 @@ public class VisitorLab {
         }
         return uncompletedVisitors;
     }
+
+
 
     /*public List<Visitor> getUncompletedVisitors() {
         List<Visitor> visitors = new ArrayList<>();

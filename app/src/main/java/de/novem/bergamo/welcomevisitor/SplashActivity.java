@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,11 +16,14 @@ import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private static final String DIALOG_PASSWORD = "DialogPassword";
+
     private ImageButton checkInButton;
     private ImageButton checkOutButton;
     private TextClock clockTextView;
     private TextClock dateclockTextView;
     private TextView counterVisitorsTextView;
+    private TextView adminAreaTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,18 @@ public class SplashActivity extends AppCompatActivity {
 
         dateclockTextView = (TextClock)findViewById(R.id.date_stamp_text_clock);
         dateclockTextView.setFormat24Hour("EEE dd MMM");
+
+        adminAreaTextView = (TextView)findViewById(R.id.admin_link_textview);
+        adminAreaTextView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v){
+                PasswordDialogFragment dialog = new PasswordDialogFragment();
+                dialog.show(getSupportFragmentManager(), DIALOG_PASSWORD);
+                /*Intent intent = new Intent(SplashActivity.this, AdminTableActivity.class);
+                startActivity(intent);*/
+            }
+        });
 
 
     }
