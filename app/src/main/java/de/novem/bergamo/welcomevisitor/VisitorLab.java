@@ -4,11 +4,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+import android.provider.Settings;
 import android.provider.SyncStateContract;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.UUID;
@@ -17,6 +23,14 @@ import de.novem.bergamo.welcomevisitor.database.VisitorBaseHelper;
 import de.novem.bergamo.welcomevisitor.database.VisitorCursorWrapper;
 import de.novem.bergamo.welcomevisitor.database.VisitorDbSchema;
 import de.novem.bergamo.welcomevisitor.database.VisitorDbSchema.VisitorTable;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.write.DateFormat;
+import jxl.write.DateTime;
+import jxl.write.Label;
+import jxl.write.WritableCellFormat;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
 
 /**
  * Created by gfand on 26/12/2016.
@@ -170,7 +184,50 @@ public class VisitorLab {
         }
 
         return visitors;
+
     }
+
+    public List<String> getCompanies(){
+        List<String> companies = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        cursor = queryVisitors(null, null, null);
+
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                companies.add(cursor.getVisitor().getCompany());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return companies;
+
+
+    }
+
+    /*public List<Visitor> getVisitorBetweenDates() {
+        List<Visitor> visitors = new ArrayList<>();
+        VisitorCursorWrapper cursor;
+        //boooh
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        long timeNow = new Date(System.currentTimeMillis()).getTime();
+        long time1dayAgo = new Date(System.currentTimeMillis() - DAY_IN_MS).getTime();
+        cursor = queryVisitors(VisitorTable.Cols.CHECKIN_DATE + " >= ?", new String[] {"" + time1dayAgo},null);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                visitors.add(cursor.getVisitor());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return visitors;
+    }*/
 
     public List<Visitor> getVisitorQuery(String query) {
         List<Visitor> visitors = new ArrayList<>();
@@ -289,6 +346,81 @@ public class VisitorLab {
         List<Visitor> uncompletedVisitorsFromSameCompany = getUncompletedVisitorsFromSameCompany(company);
         int numVis = uncompletedVisitorsFromSameCompany.size();
         return numVis;
+    }
+
+
+    public void exportToExcel(){
+        List<Visitor> visitors = new ArrayList<>();
+
+        VisitorCursorWrapper cursor = queryVisitors(null,null,null);
+        File sd = Environment.getExternalStorageDirectory();
+        String csvFile = "guestbook.xls";
+        File directory = new File(sd.getAbsolutePath());
+        //create directory if not exist
+        if (!directory.isDirectory()) {
+            directory.mkdirs();
+        }
+        try {
+
+            //file path
+            File file = new File(directory, csvFile);
+            WorkbookSettings wbSettings = new WorkbookSettings();
+            wbSettings.setLocale(new Locale("en", "EN"));
+            WritableWorkbook workbook;
+            workbook = Workbook.createWorkbook(file, wbSettings);
+            //Excel sheet name. 0 represents first sheet
+            WritableSheet sheet = workbook.createSheet("userList", 0);
+            // column and row
+            sheet.addCell(new Label(0, 0, "Company"));
+            sheet.addCell(new Label(1, 0, "Last Name"));
+            sheet.addCell(new Label(2, 0, "First Name"));
+            sheet.addCell(new Label(3, 0, "Purpose of the visit"));
+            sheet.addCell(new Label(4, 0, "Employee to meet"));
+            sheet.addCell(new Label(5, 0, "Check-in date"));
+            sheet.addCell(new Label(6, 0, "Check-out date"));
+            sheet.addCell(new Label(7, 0, "Completed"));
+
+            if (cursor.moveToFirst()) {
+                do {
+
+
+                    String company = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.COMPANY));
+                    String last_name = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.LAST_NAME));
+                    String first_name = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.FIRST_NAME));
+                    String purpose_visit = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.PURPOSE_VISIT));
+                    String employee_meet = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.EMPLOYEE_MEET));
+                    Date checkin_date = new Date(cursor.getLong(cursor.getColumnIndex(VisitorTable.Cols.CHECKIN_DATE)));
+                    Date checkout_date = new Date (cursor.getLong(cursor.getColumnIndex(VisitorTable.Cols.CHECKOUT_DATE)));
+                    String completed = cursor.getString(cursor.getColumnIndex(VisitorTable.Cols.COMPLETED));
+
+                    DateFormat customDateFormat = new DateFormat ("dd MMM yyyy hh:mm:ss");
+                    WritableCellFormat dateFormat = new WritableCellFormat(customDateFormat);
+
+
+                    int i = cursor.getPosition() + 1;
+                    sheet.addCell(new Label(0, i, company));
+                    sheet.addCell(new Label(1, i, last_name));
+                    sheet.addCell(new Label(2, i, first_name));
+                    sheet.addCell(new Label(3, i, purpose_visit));
+                    sheet.addCell(new Label(4, i, employee_meet));
+                    DateTime checkin_cell = new DateTime(5,i,checkin_date,dateFormat, DateTime.GMT);
+                    sheet.addCell(checkin_cell);
+                    DateTime checkout_cell = new DateTime(6,i,checkout_date, dateFormat, DateTime.GMT);
+                    sheet.addCell(checkout_cell);
+                    sheet.addCell(new Label(7, i, completed));
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            workbook.write();
+            workbook.close();
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
 }

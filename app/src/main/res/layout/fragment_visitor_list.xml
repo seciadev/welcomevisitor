@@ -114,26 +114,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/back_button"/>
-
-            <Button
-                android:id="@+id/check_out_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/check_out"/>
-
-        </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/novemColor">
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:background="@color/novemColor"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentStart="true"
+        android:text="@string/back_button"/>
+
+    <Button
+        android:id="@+id/check_out_button"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:text="@string/check_out"
+        android:background="@color/novemColor"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentEnd="true"
+        />
+    <!--android:layout_centerInParent="true"/>-->
+</RelativeLayout>
 
     </android.support.percent.PercentRelativeLayout>

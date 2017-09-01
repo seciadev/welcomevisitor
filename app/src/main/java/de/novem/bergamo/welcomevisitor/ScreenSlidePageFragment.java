@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -80,7 +81,17 @@ public class ScreenSlidePageFragment extends Fragment {
                  rootView= (ViewGroup) inflater.inflate(
                         R.layout.fragment_visitor_slide_page_1, container, false);
 
-                final EditText mVisitorCompany = (EditText)rootView.findViewById(R.id.visitor_company);
+                final AutoCompleteTextView mVisitorCompany = (AutoCompleteTextView) rootView.findViewById(R.id.visitor_company);
+                VisitorLab visitorLab = VisitorLab.get(getActivity());
+                //String[] mCompanies = new String[visitorLab.getCompanies().size()];
+                //mCompanies = visitorLab.getCompanies().toArray(mCompanies);
+                List<String> mCompanies = visitorLab.getCompanies();
+                int layoutItemId = android.R.layout.simple_dropdown_item_1line;
+                ArrayAdapter<String> textAdapter = new ArrayAdapter<String>(getActivity(), layoutItemId, mCompanies);
+                mVisitorCompany.setThreshold(2);
+                mVisitorCompany.setAdapter(textAdapter);
+
+
                 mVisitorCompany.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,7 +137,6 @@ public class ScreenSlidePageFragment extends Fragment {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 // Apply the adapter to the spinner
                 spinner.setAdapter(adapter);
-
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view,
                                                int position, long id) {
@@ -138,6 +148,7 @@ public class ScreenSlidePageFragment extends Fragment {
 
                     }
                 });
+
 
                 final EditText mEmployeeVisit = (EditText)rootView.findViewById(R.id.employee_edit_text);
                 mEmployeeVisit.addTextChangedListener(new TextWatcher() {

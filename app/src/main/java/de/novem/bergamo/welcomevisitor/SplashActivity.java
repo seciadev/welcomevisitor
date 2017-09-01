@@ -9,10 +9,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextClock;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         setContentView(R.layout.activity_splash);
 
         checkInButton = (ImageButton)findViewById(R.id.checkInButton);
@@ -83,6 +87,11 @@ public class SplashActivity extends AppCompatActivity {
         String counterVis = res.getQuantityString(R.plurals.numberOfVisitorsPresent, counterVisitor, counterVisitor);
         counterVisitorsTextView.setText(counterVis);
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        //do nothing
     }
 
 

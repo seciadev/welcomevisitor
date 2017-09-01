@@ -1,10 +1,14 @@
 package de.novem.bergamo.welcomevisitor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,8 +20,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,11 +32,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.security.PrivateKey;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import de.novem.bergamo.welcomevisitor.database.VisitorCursorWrapper;
 
 /**
  * Created by gfand on 26/12/2016.
@@ -38,6 +47,8 @@ import java.util.List;
 
 public class AdminTableFragment extends Fragment {
 
+
+    private static final String DIALOG_FRAGMENT = "DialogFragment";
 
     private RecyclerView mVisitorRecyclerView;
     private TextView mLastNameLabel;
@@ -52,6 +63,7 @@ public class AdminTableFragment extends Fragment {
     //private Button mCheckOutButton;
     private Button mBackButton;
     private boolean mAscending;
+    private FloatingActionButton mFloatingActionButton;
     //private String mCompany;
 
     //   public int mSelectedVisitors;
@@ -67,6 +79,8 @@ public class AdminTableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin_list, container, false);
 
+        setupUI(view.findViewById(R.id.container_admin_list));
+
         mVisitorRecyclerView = (RecyclerView) view.findViewById(R.id.visitor_recycler_view);
         mVisitorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -77,9 +91,9 @@ public class AdminTableFragment extends Fragment {
             @Override
             public void onClick(View v){
                 mLastNameLabel.setBackgroundColor(Color.LTGRAY);
-                mPurposeLabel.setBackgroundColor(Color.WHITE);
-                mCompanyLabel.setBackgroundColor(Color.WHITE);
-                mDateLabel.setBackgroundColor(Color.WHITE);
+                mPurposeLabel.setBackgroundColor(Color.TRANSPARENT);
+                mCompanyLabel.setBackgroundColor(Color.TRANSPARENT);
+                mDateLabel.setBackgroundColor(Color.TRANSPARENT);
                 VisitorLab visitorLab = VisitorLab.get(getActivity());
                 List<Visitor> visitors = visitorLab.getVisitorsSortName(mAscending);
                 UpdateUIVisitors(visitors);
@@ -90,10 +104,10 @@ public class AdminTableFragment extends Fragment {
         mPurposeLabel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mLastNameLabel.setBackgroundColor(Color.WHITE);
+                mLastNameLabel.setBackgroundColor(Color.TRANSPARENT);
                 mPurposeLabel.setBackgroundColor(Color.LTGRAY);
-                mCompanyLabel.setBackgroundColor(Color.WHITE);
-                mDateLabel.setBackgroundColor(Color.WHITE);
+                mCompanyLabel.setBackgroundColor(Color.TRANSPARENT);
+                mDateLabel.setBackgroundColor(Color.TRANSPARENT);
                 VisitorLab visitorLab = VisitorLab.get(getActivity());
                 List<Visitor> visitors = visitorLab.getVisitorSortPurpose(mAscending);
                 UpdateUIVisitors(visitors);
@@ -104,10 +118,10 @@ public class AdminTableFragment extends Fragment {
         mCompanyLabel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mLastNameLabel.setBackgroundColor(Color.WHITE);
-                mPurposeLabel.setBackgroundColor(Color.WHITE);
+                mLastNameLabel.setBackgroundColor(Color.TRANSPARENT);
+                mPurposeLabel.setBackgroundColor(Color.TRANSPARENT);
                 mCompanyLabel.setBackgroundColor(Color.LTGRAY);
-                mDateLabel.setBackgroundColor(Color.WHITE);
+                mDateLabel.setBackgroundColor(Color.TRANSPARENT);
                 VisitorLab visitorLab = VisitorLab.get(getActivity());
                 List<Visitor> visitors = visitorLab.getVisitorSortCompany(mAscending);
                 UpdateUIVisitors(visitors);
@@ -118,9 +132,9 @@ public class AdminTableFragment extends Fragment {
         mDateLabel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                mLastNameLabel.setBackgroundColor(Color.WHITE);
-                mPurposeLabel.setBackgroundColor(Color.WHITE);
-                mCompanyLabel.setBackgroundColor(Color.WHITE);
+                mLastNameLabel.setBackgroundColor(Color.TRANSPARENT);
+                mPurposeLabel.setBackgroundColor(Color.TRANSPARENT);
+                mCompanyLabel.setBackgroundColor(Color.TRANSPARENT);
                 mDateLabel.setBackgroundColor(Color.LTGRAY);
                 VisitorLab visitorLab = VisitorLab.get(getActivity());
                 List<Visitor> visitors = visitorLab.getVisitorSortDate(mAscending);
@@ -148,6 +162,36 @@ public class AdminTableFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 //
+            }
+        });
+
+        mFloatingActionButton = (FloatingActionButton) view.findViewById(R.id.floating_action_share);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                VisitorLab visitorLab = VisitorLab.get(getActivity());
+                visitorLab.exportToExcel();
+                Toast.makeText(getActivity(),
+                        "Data Exported in a Excel Sheet", Toast.LENGTH_SHORT).show();
+                /*ExportDialogFragment dialog = new ExportDialogFragment();
+                dialog.show(getFragmentManager(), DIALOG_FRAGMENT);*/
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {"reception.novem@gmail.com"});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Visitor worksheet");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "This is the updated guestbook");
+                File root = Environment.getExternalStorageDirectory();
+                String pathToMyAttachedFile = "guestbook.xls";
+                File file = new File(root, pathToMyAttachedFile);
+                if (!file.exists() || !file.canRead()) {
+                    return;
+                }
+                Uri uri = Uri.fromFile(file);
+                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(emailIntent, "Pick an Email provider"));
+
+
+
             }
         });
 
@@ -212,6 +256,7 @@ public class AdminTableFragment extends Fragment {
     }
 
     private void UpdateUIVisitors(List<Visitor> visitors) {
+        mAdapter = null;
         if (mAdapter == null) {
             mAdapter = new VisitorAdapter(visitors);
             mVisitorRecyclerView.setAdapter(mAdapter);
@@ -233,49 +278,46 @@ public class AdminTableFragment extends Fragment {
         updateUI();
     }
 
-    /*@Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_visitor_list, menu);
-    }*/
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_new_visitor:
-                Intent intent = new Intent(getActivity(), ScreenSlidePagerActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
         }
-    }*/
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
 
     private void updateUI() {
         VisitorLab visitorLab = VisitorLab.get(getActivity());
         List<Visitor> visitors = visitorLab.getVisitors();
 
         if (mAdapter == null) {
-
             mAdapter = new VisitorAdapter(visitors);
             mVisitorRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setVisitors(visitors);
             mAdapter.notifyDataSetChanged();
         }
-
-        /*SparseBooleanArray mSelectedVisitors = mAdapter.mCheckedVisitors;
-        if (mSelectedVisitors.size() > 0) {
-            mVisitorSelectedTextView.setVisibility(View.VISIBLE);
-            //mExitVisitors.setVisibility(View.VISIBLE);
-            mCheckOutButton.setEnabled(true);
-            Resources res = getResources();
-            String visitorsNotification = res.getQuantityString(R.plurals.numberOfVisitorsCounted, mSelectedVisitors.size(), mSelectedVisitors.size());
-            mVisitorSelectedTextView.setText(visitorsNotification);
-        } else {
-            mVisitorSelectedTextView.setVisibility(View.GONE);
-            //mExitVisitors.setVisibility(View.GONE);
-        }*/
     }
 
     private class VisitorHolder extends RecyclerView.ViewHolder {
@@ -318,7 +360,9 @@ public class AdminTableFragment extends Fragment {
             } else {
                 mCompanyTextView.setText("");
             }
+
             mPurposeTextView.setText(mVisitor.getPurpose());
+
             if(!mVisitor.isCompleted()){
                 mIsInsideCheckBox.setChecked(true);
             }

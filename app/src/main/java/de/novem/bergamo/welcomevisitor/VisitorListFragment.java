@@ -256,7 +256,7 @@ public class VisitorListFragment extends Fragment {
                     } else {
                         //  mSelectedVisitors--;
                         mCheckedVisitors.delete(position);
-                        holder.mItemVisitorRelativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        holder.mItemVisitorRelativeLayout.setBackgroundColor(Color.TRANSPARENT);
                     }
                     updateUI();
                 }

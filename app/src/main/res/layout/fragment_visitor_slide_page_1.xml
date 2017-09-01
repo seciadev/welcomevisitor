@@ -56,7 +56,7 @@
 
         </LinearLayout>
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/visitor_company"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,17 +65,7 @@
             android:inputType="textCapSentences"
             android:hint="@string/visitor_company_hint"/>
 
-        <RelativeLayout
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next_button"/>
-            <!--android:layout_centerInParent="true"/>-->
-        </RelativeLayout>
+
 
 
         <FrameLayout
@@ -91,6 +81,25 @@
 
         </LinearLayout>
     </LinearLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/novemColor">
+            <Button
+                android:id="@+id/next_button"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:text="@string/next_button"
+                android:background="@color/novemColor"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:layout_alignParentEnd="true"
+                />
+            <!--android:layout_centerInParent="true"/>-->
+        </RelativeLayout>
 
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="50dp"
+    android:keepScreenOn="true"
     >
 
 
@@ -23,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textSize="70sp"
-        android:textColor="#659EC9"
+        android:textColor="@color/novemColor"
         android:text="Welcome"
         android:layout_below="@id/logo"
         android:layout_centerHorizontal="true"

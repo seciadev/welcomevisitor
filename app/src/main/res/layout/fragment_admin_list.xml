@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.percent.PercentRelativeLayout
+    android:id="@+id/container_admin_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     >
 
     <LinearLayout
@@ -38,6 +40,7 @@
                 android:hint="Search..."
                 android:layout_marginBottom="25dp"
                 android:layout_toRightOf="@id/search_ic"
+
                 />
         </RelativeLayout>
 
@@ -132,21 +135,40 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/visitor_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="700dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_action_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="24dp"
+            android:src="@drawable/ic_share"
+            app:layout_anchor="@id/visitor_recycler_view"
+            app:layout_anchorGravity="bottom|right|end" />
 
-            <Button
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/back_button"/>
-
-        </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_pane"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/novemColor">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:background="@color/novemColor"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentStart="true"
+            android:text="@string/back_button"/>
+
+        <!--android:layout_centerInParent="true"/>-->
+    </RelativeLayout>
 
     </android.support.percent.PercentRelativeLayout>

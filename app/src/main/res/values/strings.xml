@@ -27,7 +27,7 @@
     <string name="add_visitor_button">Add visitor</string>
     <string name="remove_visitor_button">- Remove Visitor</string>
     <string name="ok_enter">Check-in</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_splash">Guestbook</string>
     <string name="title_activity_company_list">CompanyListActivity</string>
     <string name="visitor_number_label"># visitors</string>
     <string name="company_error_hint">Check the field</string>
@@ -56,11 +56,17 @@
     <string name="checked_out_label">Now inside</string>
     <string name="company_label">Company</string>
     <string name="password_title">Enter password:</string>
+    <string name="choose_period_option">Choose export period:</string>
     <string-array name="purpose_choice">
         <item>Meeting</item>
         <item>Interview</item>
         <item>Maintenance</item>
         <item>Other</item>
+    </string-array>
+    <string-array name="time_spinner_choice">
+        <item>Last 6 months</item>
+        <item>Last year</item>
+        <item>All data</item>
     </string-array>
     <plurals name="numberOfVisitorsCounted">
         <item quantity="one">%d visitor selected</item>
